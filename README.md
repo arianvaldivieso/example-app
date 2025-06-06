@@ -59,3 +59,66 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+## Instalación y ejecución con Docker
+
+### Requisitos previos
+- Docker
+- Docker Compose
+
+### Pasos para levantar el entorno
+
+1. Clona este repositorio:
+   ```bash
+   git clone <url-del-repo>
+   cd example-app
+   ```
+
+2. Copia el archivo de entorno:
+   ```bash
+   cp .env.example .env
+   ```
+
+3. Levanta los contenedores:
+   ```bash
+   docker-compose up -d --build
+   ```
+
+4. Instala las dependencias de Composer dentro del contenedor:
+   ```bash
+   docker-compose exec app composer install
+   ```
+
+5. Genera la clave de la aplicación:
+   ```bash
+   docker-compose exec app php artisan key:generate
+   ```
+
+6. Ejecuta las migraciones y seeders:
+   ```bash
+   docker-compose exec app php artisan migrate --seed
+   ```
+
+7. (Opcional) Si usas Passport o Sanctum para autenticación, ejecuta:
+   ```bash
+   docker-compose exec app php artisan passport:install
+   # o
+   docker-compose exec app php artisan sanctum:install
+   ```
+
+8. Accede a la API en:
+   - http://localhost:8000/api
+
+### Ejecutar tests
+
+```bash
+# Ejecuta los tests dentro del contenedor
+ docker-compose exec app php artisan test
+```
+
+### Notas
+- El contenedor principal se llama `app` (ajusta si tu docker-compose.yml usa otro nombre).
+- Asegúrate de que los puertos definidos en `docker-compose.yml` no estén ocupados.
+- Puedes modificar la configuración de la base de datos en el archivo `.env` si lo necesitas.
+
+---
